@@ -27,9 +27,33 @@ vector<Sal> possibilities (vector<Sal> &salas, vector<Tub> &tubos, int par) {
             result.push_back(tub.sal1);
         }
     }
-
     return result;
 }
+
+int bestLine (vector<Sal> &salas, vector<Tub> &tubos, int par) {
+    if (salas.empty()) return 0;
+    int result = 0;
+    for (const Sal sala : salas)
+    {
+        if bestLine(possibilities(salas, tubos, sala), tubos, sala) result ++;
+    }
+    return result;
+    //if bestLine(possibilities(salas, tubos, par), tubos, par) 
+}
+
+Sal veryProx (vector<Sal> &salasPossibols, int alt)
+{
+    Sal salaAltProx = salasPossibols[0];
+    for (const Sal sala : salasPossibols)
+    {
+        if (sala.alt > salaAltProx)
+        {
+            salaAltProx = sala.alt
+        }
+    }
+    return salaAltProx;
+}
+
 int main() {
     
     cin >> salNum >> tub >> par;
