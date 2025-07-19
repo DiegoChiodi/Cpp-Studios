@@ -6,57 +6,52 @@ using namespace std;
 
 int salNum, tub, par;
 
-struct Tub {
-    int id1, id2;
-};
-
 struct Sal {
     int alt, id;
-    vector<Tub> tubs; // List of tubs connected to this sal
+ };
+
+struct Tub {
+    Sal sal1, sal2;
 };
 
-int nearDown(vector<Sal>& salas, int par) {
-    for (const Sal& sal : salas) {
-        if (sal.id == par) {
-            if (sal.tubs.empty()) return 0; // No tubs, cannot go down
-            int id;
-            int nearDown = sal.alt;
-            for (const Tub& tub : sal.tubs) {
-                if (tub.id2 < nearDown) {
-                    nearDown = tub.id1; // Find the nearest tub that goes down
-                    id = tub.id2; // Store the ID of the tub
-                } else if (tub.id1 < nearDown) {
-                    nearDown = tub.id1; // Find the nearest tub that goes down
-                    id = tub.id1; // Store the ID of the tub
-                }
-            }
-            return 0; // No valid tub found to go down
+vector<Sal> possibilities (vector<Sal> &salas, vector<Tub> &tubos, int par) {
+    vector<Sal> result;
+    Sal parSal = salas[par - 1]; // Ajustando para índice baseado em 0
+    
+    for (const Tub tub : tubos) {
+        if (tub.sal1.id == parSal.id && tub.sal1.alt > tub.sal2.alt)//Checa se a sala 1 é a sala par e
+        //  se sua altura é maior que a da sala 2 para poder escorregar
+        {
+            result.push_back(tub.sal2);
+        } else if (tub.sal2.id == parSal.id && tub.sal2.alt > tub.sal1.alt) { //faz a mesma coisa, mas com a sala 2
+            result.push_back(tub.sal1);
         }
-        
     }
-    return 0; // If no matching sal found
-}
 
+    return result;
+}
 int main() {
+    
     cin >> salNum >> tub >> par;
 
-    Sal salas[salNum];
+    vector<Tub> tubos(tub);
+    vector<Sal> salas(salNum);
 
     for (int i = 0; i < salNum; i++) {
+        salas[i].id = i;
         cin >> salas[i].alt;
-        salas[i].id = i + 1; // Assigning ID starting from 1
     }
 
     for (int i = 0; i < tub; i++) {
-        Tub tub;
-        cin >> tub.id1 >> tub.id2;
-        salas[i].tubs.push_back(tub);
-        cout << "Tub " << i + 1 << ": " << tub.id1 << " " << tub.id2 << endl;
+        Tub tubModel;
+        int id1, id2;
+        cin >> id1 >> id2;   // Adjusting for 0-based index
+        tubModel.sal1 = salas[id1 - 1];
+        tubModel.sal2 = salas[id2 - 1];
+        tubos[i] = tubModel;
     }
 
-    for (int i = 0; i < salNum; i++) {
-
-    }
+    std::cout << "Possibilities: " << possibilities(salas, tubos, par).size() << std::endl;
 
     return 0;
 }
