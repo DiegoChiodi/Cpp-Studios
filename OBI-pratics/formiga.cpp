@@ -14,7 +14,7 @@ struct Tub {
     Sal sal1, sal2;
 };
 
-vector<Sal> possibilities (vector<Sal> &salas, vector<Tub> &tubos, int par) {
+vector<Sal> possibilities (const vector<Sal> &salas, const vector<Tub> &tubos, int par) {
     vector<Sal> result;
     Sal parSal = salas[par];
     for (const Tub tub : tubos) {
@@ -29,17 +29,23 @@ vector<Sal> possibilities (vector<Sal> &salas, vector<Tub> &tubos, int par) {
     return result;
 }
 
-int bestLine (vector<Sal> salas, vector<Tub> &tubos, int par) {
+int bestLine (const vector<Sal> &salas, const vector<Tub> &tubos) {
     if (salas.empty()) return 0;
-    int result = 1;
+    int bestLineCont = 0;
+    int actualLine = 0;
     for (const Sal sala : salas) {
-        result += (bestLine(possibilities(salas, tubos, sala.id), tubos, sala.id));
+        actualLine = (bestLine(possibilities(salas, tubos, sala.id), tubos)) + 1;
+        if (actualLine > bestLineCont) {
+            bestLineCont = actualLine;
+        }
     }
-    return result;
+    return bestLineCont;
     //if bestLine(possibilities(salas, tubos, par), tubos, par) 
 }
 
 int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     
     cin >> salNum >> tub >> par;
 
@@ -60,17 +66,6 @@ int main() {
         tubos[i] = tubModel;
     }
 
-    int bestLineCont = 0;
-    int actualLine = 0;
-
-    for (const Sal sala : possibilities(salas, tubos, par))
-    {
-        actualLine = bestLine(salas, tubos, sala.id);
-        if (actualLine > bestLineCont) {
-            bestLineCont = actualLine;
-        }
-    }
-
-    std::cout << "BestLine: " << bestLineCont;
+    cout << bestLine(possibilities(salas, tubos, par - 1), tubos) << endl;
     return 0;
 }
