@@ -27,9 +27,10 @@ The repository is organized by topic or study area:
 
 ## 🚀 How to Run
 
-1. Clone the repository:
-```bash
+Clone the repository:
+
 git clone https://github.com/DiegoChiodi/Cpp-Studios.git
+
 Open the folder in Visual Studio Code.
 
 Make sure you have a C++17-compatible compiler (e.g., g++ via MSYS2).
