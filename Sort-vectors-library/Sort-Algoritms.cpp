@@ -60,6 +60,7 @@ std::vector<int> selectionSort(std::vector<int>& vetor)
         vetor[i] = vetor[menor];
         vetor[menor] = temp;   
     }
+    
     return vetor;
 }
 
