@@ -65,47 +65,54 @@ std::vector<int> selectionSort(std::vector<int>& vetor)
 }
 
 int main (int argc, char* argv[])
-{
-    std::cout << "digite o tamanho do vetor: " << std::endl;
-    int vetorSize;
-    std::cin >> vetorSize;
+{   
+    int escolha = 0;
 
-    std::vector<int> vetor(vetorSize);
-    
-    for (int i = 0; i < vetor.size(); i++)
-    {
-        std::cout << "digite o valor do vetor[" << i << "]: ";
-        std::cin >> vetor[i];
-    }
+    while (true)
+    { 
+        std::cout << "Escolha a função para ordenar:" << std::endl;
+        std::cout << "1 - bubbleSort" << std::endl;
+        std::cout << "2 - insertSort" << std::endl;
+        std::cout << "3 - selectionSort" << std::endl;
+        std::cout << "4 - Exit" << std::endl;
 
-    std::cout << "Escolha a função para ordenar:" << std::endl;
-    std::cout << "1 - bubbleSort" << std::endl;
-    std::cout << "2 - insertSort" << std::endl;
-    std::cout << "3 - selectionSort" << std::endl;
-
-    int escolha;
-    std::cin >> escolha;
-
-    vetor = insertSort(vetor);
-    
-    switch(escolha){
-        case (1):
-            vetor = bubbleSort(vetor);
+        std::cin >> escolha;
+        
+        if (escolha == 4)
+        {
             break;
-        case 2:
-            vetor = insertSort(vetor);
-            break;
-        case 3:
-            vetor = selectionSort(vetor);
-            break;
-    }
-    
-    std::cout << "Os valores do vetor sao:" << std::endl;
+        }
+        
+        std::cout << "digite o tamanho do vetor: " << std::endl;
+        int vetorSize;
+        std::cin >> vetorSize;
 
-    for (int i =0; i < vetor.size(); i++)
-    {
-        std::cout << vetor[i] << " ";
-    }
+        std::vector<int> vetor(vetorSize);
+        for (int i = 0; i < vetor.size(); i++)
+        {
+            std::cout << "digite o valor do vetor[" << i << "]: ";
+            std::cin >> vetor[i];
+        }
 
+        switch(escolha){
+            case (1):
+                vetor = bubbleSort(vetor);
+                break;
+            case 2:
+                vetor = insertSort(vetor);
+                break;
+            case 3:
+                vetor = selectionSort(vetor);
+                break;
+        }
+
+        std::cout << "Os valores do vetor sao:" << std::endl;
+
+        for (int i =0; i < vetor.size(); i++)
+        {
+            std::cout << vetor[i] << " ";
+        }
+        std::cout << std::endl;
+    }
     return 0;
 }
