@@ -81,39 +81,45 @@ int main()
             qtd++;
         }
     }
-
-    // Agrupa amigos iguais
-    for (int i = 0; i < qtd; i++)
-    {
-        for (int j = i + 1; j < qtd; j++)
-        {
-            if (friend_i[i] == friend_i[j])
-            {
-                if (resp[i] == -1 || resp[j] == -1)
-                {
-                    resp[i] = -1;
-                }
-                else
-                {
-                    resp[i] += resp[j];
-                }
-
-                // remove j
-                friend_i[j] = friend_i[qtd - 1];
-                resp[j]     = resp[qtd - 1];
-                qtd--;
-                j--;
-            }
-        }
-    }
-
+    
     // Ordena uma única vez
     bubbleSort(friend_i, resp, qtd);
+    
+    // Agrupa amigos iguais
+
+    int novoQtd = 0;
+
+    for (int i = 0; i < qtd; )
+    {
+        int id = friend_i[i];
+        int soma = resp[i];
+        bool invalido = (resp[i] == -1);
+
+        int j = i + 1;
+        while (j < qtd && friend_i[j] == id)
+        {
+            if (resp[j] == -1)
+                invalido = true;
+            else
+                soma += resp[j];
+            j++;
+        }
+
+        friend_i[novoQtd] = id;
+        resp[novoQtd] = invalido ? -1 : soma;
+        novoQtd++;
+
+        i = j;
+    }
+
+    qtd = novoQtd;
+
 
     // Imprime
     for (int i = 0; i < qtd; i++)
     {
-        cout << friend_i[i] << " " << resp[i] << endl;
+        cout << friend_i[i] << ' ' << resp[i] << endl;
     }
+    
     return 0;
 }
