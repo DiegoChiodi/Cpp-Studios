@@ -33,8 +33,5 @@ int main (void)
 
     cout << results;
 
-
-
-
     return 0;
 }
