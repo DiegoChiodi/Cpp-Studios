@@ -4,7 +4,7 @@ using namespace std;
 
 bool get_meio(const int ver, const int border_1, const int border_2)
 {
-    if ((ver < border_1 && ver > border_2) || (ver > border_1 && ver < border_2))
+    if ((ver <= border_1 && ver >= border_2) || (ver >= border_1 && ver <= border_2))
     {
         return true;
     }
