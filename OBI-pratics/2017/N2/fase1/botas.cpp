@@ -30,7 +30,6 @@ int main(void)
 
     for (int i = 0; i < 31; i++)
     {
-        //Descobrir o menor e dividir por 2
         pares += (numsE[i] > numsD[i]) ? numsD[i] : numsE[i];
     }
 
