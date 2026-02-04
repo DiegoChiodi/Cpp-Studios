@@ -16,7 +16,7 @@ public:
 
 	void print()
 	{
-		cout << this->name << this->cpf << endl;
+		cout << this->name << " " << this->cpf << endl;
 	}
 
 	string get_name()
@@ -44,7 +44,7 @@ public:
 	}
 	void print()
 	{
-		cout << this->name << this->author << endl;
+		cout << this->name << " " << this->author << endl;
 	}
 
 	string get_name()
@@ -63,7 +63,29 @@ class Loan
 protected:
 	Client* client;
 	Book* book;
+
+public:
+	Loan(Client _client, Book _book)
+	{
+		this->client = &_client;
+		this->book = &_book;
+	}
+
+	void print()
+	{
+		cout << client->get_name() << " " << book->get_name() << " " << this->year  << endl;
+	}
 	
+	Client get_client()
+	{
+		return *client;
+	}
+
+	Book get_book()
+	{
+		return *book;
+	}
+
 	int year;
 };
 
@@ -83,6 +105,11 @@ public:
 		this->books.push_back(_book);
 	}
 
+	void register_loan(Loan _loan)
+	{
+		this->loans.push_back(_loan);
+	}
+
 	void print_client()
 	{
 		for (Client client : clients)
@@ -99,12 +126,19 @@ public:
 		}
 	}
 
+	void print_loan()
+	{
+		for (Loan loan : loans)
+		{
+			loan.print();
+		}
+	}
+
 	void delet_client(Client& _client)
 	{
 		for (int i = 0; i < clients.size(); i++)
 		{
-			if (_client.get_name() == this->clients[i].get_name() &&
-			_client.get_cpf() == this->clients[i].get_cpf())
+			if (_client.get_cpf() == this->clients[i].get_cpf())
 			{
 				this->clients.erase(this->clients.begin() + i);
 			}
@@ -119,6 +153,19 @@ public:
 			_book.get_author() == this->books[i].get_author())
 			{
 				this->books.erase(this->books.begin() + i);
+			}
+		}
+	}
+
+	void delet_loan(Loan& _loan)
+	{
+		for (int i = 0; i < loans.size(); i++)
+		{
+			if (_loan.get_client().get_cpf() == this->loans[i].get_client().get_cpf() &&
+			_loan.get_book().get_name() == this->loans[i].get_book().get_name() &&
+			_loan.get_book().get_author() == this->loans[i].get_book().get_author())
+			{
+				this->loans.erase(this->loans.begin() + i);
 			}
 		}
 	}
@@ -146,6 +193,23 @@ public:
 			}
 		}
 	}
+
+	void replace_loan(Loan loan_previos, Loan loan_new)
+	{
+		for (int i = 0; i < loans.size(); i++)
+		{
+			if (loan_previos.get_client().get_cpf() == this->loans[i].get_client().get_cpf() &&
+			loan_previos.get_book().get_name() == this->loans[i].get_book().get_name() &&
+			loan_previos.get_book().get_author() == this->loans[i].get_book().get_author())
+			{
+				this->loans[i] = loan_new;
+			}
+		}
+	}
+
+class System()
+public:
+	
 };
 
  int main (void)
