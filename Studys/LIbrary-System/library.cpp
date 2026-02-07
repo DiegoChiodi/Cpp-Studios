@@ -37,7 +37,7 @@ protected:
 	string author;
 public:
 
-	Book(string n, int a)
+	Book(string n, string a)
 	{
 		this->name = n;
 		this->author = a;
@@ -105,9 +105,35 @@ public:
 		this->books.push_back(_book);
 	}
 
-	void register_loan(Loan _loan)
+	void register_loan(int _cpf, Book _book)
 	{
-		this->loans.push_back(_loan);
+		int cli_index = -1;
+		int book_index = -1;
+		for (int i = 0; i < this->clients.size(); i++)
+		{
+			if (_cpf == this->clients[i].get_cpf())
+			{
+				cli_index = i;
+				break;
+			}
+		}
+
+		if (cli_index == -1) {	return;	}
+
+		for (int i = 0; i < this->books.size(); i++)
+		{
+			if (_book.get_name() == this->books[i].get_name() &&
+			_book.get_author() == this->books[i].get_author())
+			{
+				book_index = -1;
+				break;
+			}
+		}
+
+		if (book_index == -1) { return;}
+
+		Loan loan(this->clients[cli_index], this->books[book_index]);
+		this->loans.push_back(loan);
 	}
 
 	void print_client()
@@ -134,11 +160,11 @@ public:
 		}
 	}
 
-	void delet_client(Client& _client)
+	void delet_client(int _cpf)
 	{
-		for (int i = 0; i < clients.size(); i++)
+		for (int i = 0; i < this->clients.size(); i++)
 		{
-			if (_client.get_cpf() == this->clients[i].get_cpf())
+			if (_cpf == this->clients[i].get_cpf())
 			{
 				this->clients.erase(this->clients.begin() + i);
 			}
@@ -147,7 +173,7 @@ public:
 
 	void delet_book(Book& _book)
 	{
-		for (int i = 0; i < books.size(); i++)
+		for (int i = 0; i < this->books.size(); i++)
 		{
 			if (_book.get_name() == this->books[i].get_name() &&
 			_book.get_author() == this->books[i].get_author())
@@ -206,13 +232,98 @@ public:
 			}
 		}
 	}
+};
 
-class System()
+class System
+{
+protected:
+	Library library;
 public:
-	
+	void run()
+	{
+		int opcao = 0;
+		cout << "[1] Cadastrar aluno" << endl;
+		cout << "[2] Cadastrar livro" << endl;
+		cout << "[3] Emprestar livro para aluno" << endl << endl;
+
+		cout << "[4] Deletar aluno " << endl;
+		cout << "[5] Deletar livro " << endl;
+		cout << "[6] Fazer devolução de livro" << endl << endl;
+		
+		cout << "[7] Visualizar alunos " << endl << endl;
+		cout << "[8] Visualizar livros" << endl;
+		cout << "[9] Visualizar empréstimos" << endl << endl;
+
+		cout << "[10] Alterar aluno " << endl;
+		cout << "[11] Alterar livro" << endl;
+		
+		
+		cout << "[12] Parar execução do programa" << endl << endl;
+		
+		
+		
+		
+		
+		cin >> opcao;
+		while(opcao != 12)
+		{
+			switch(opcao)
+			{
+				case (1):
+					this->library.register_client(this->create_client());
+					break;
+				case (2):
+					this->library.register_book(this->create_book());
+					break;
+				case (3):
+					this->library.register_loan(this->get_cpf(), this->create_book());
+					break;
+				case (4):
+					break;
+			}
+			
+
+
+			cin >> opcao;
+		}
+	}
+
+	int get_cpf()
+	{
+		cout << "Digite o cpf do cliente" << endl;
+		int cpf;
+		cin >> cpf;
+		return cpf;
+	}
+	Client create_client()
+	{
+		string name;
+		cout << "Digite o nome do cliente" << endl;
+		cin >> name;
+
+		int cpf = this->get_cpf();
+
+
+		return Client(name,cpf);
+	}
+
+	Book create_book()
+	{
+		string name;
+		string author;
+		cout << "Digite o nome do livro" << endl;
+		cin >> name;
+		cout << "Digite o author do livro" << endl;
+		cin >> author;
+
+		Book book(name, author);
+		return book;
+	}
 };
 
  int main (void)
  {
+	System system;
+	system.run();
 	return 0;
  }
