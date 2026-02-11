@@ -138,6 +138,10 @@ public:
 
 	void print_client()
 	{
+		if (clients.empty())
+		{
+			cout << "Não a clientes" << endl;
+		}
 		for (Client client : clients)
 		{
 			client.print();
@@ -146,17 +150,27 @@ public:
 
 	void print_book()
 	{
-		for (Book book : books)
+		if (this->books.empty())
 		{
-			book.print();
+			cout << "Não a livros" << endl;
+		} else {
+			for (Book book : books)
+			{
+				book.print();
+			}
 		}
 	}
 
 	void print_loan()
 	{
-		for (Loan loan : loans)
+		if (this->loans.empty())
 		{
-			loan.print();
+			cout << "Não a emprésitmos" << endl;
+		} else {
+			for (Loan loan : loans)
+			{
+				loan.print();
+			}
 		}
 	}
 
@@ -171,7 +185,7 @@ public:
 		}
 	}
 
-	void delet_book(Book& _book)
+	void delet_book(Book _book)
 	{
 		for (int i = 0; i < this->books.size(); i++)
 		{
@@ -183,25 +197,24 @@ public:
 		}
 	}
 
-	void delet_loan(Loan& _loan)
+	void delet_loan(int cpf, Book book)
 	{
 		for (int i = 0; i < loans.size(); i++)
 		{
-			if (_loan.get_client().get_cpf() == this->loans[i].get_client().get_cpf() &&
-			_loan.get_book().get_name() == this->loans[i].get_book().get_name() &&
-			_loan.get_book().get_author() == this->loans[i].get_book().get_author())
+			if (cpf == this->loans[i].get_client().get_cpf() &&
+			book.get_name() == this->loans[i].get_book().get_name() &&
+			book.get_author() == this->loans[i].get_book().get_author())
 			{
 				this->loans.erase(this->loans.begin() + i);
 			}
 		}
 	}
 
-	void replace_client(Client client_previos, Client client_new)
+	void replace_client(int cpf, Client client_new)
 	{
 		for (int i = 0; i < clients.size(); i++)
 		{
-			if (client_previos.get_name() == this->clients[i].get_name() &&
-			client_previos.get_cpf() == this->clients[i].get_cpf())
+			if (cpf == this->clients[i].get_cpf())
 			{
 				this->clients[i] = client_new;
 			}
@@ -242,31 +255,10 @@ public:
 	void run()
 	{
 		int opcao = 0;
-		cout << "[1] Cadastrar aluno" << endl;
-		cout << "[2] Cadastrar livro" << endl;
-		cout << "[3] Emprestar livro para aluno" << endl << endl;
 
-		cout << "[4] Deletar aluno " << endl;
-		cout << "[5] Deletar livro " << endl;
-		cout << "[6] Fazer devolução de livro" << endl << endl;
-		
-		cout << "[7] Visualizar alunos " << endl << endl;
-		cout << "[8] Visualizar livros" << endl;
-		cout << "[9] Visualizar empréstimos" << endl << endl;
-
-		cout << "[10] Alterar aluno " << endl;
-		cout << "[11] Alterar livro" << endl;
-		
-		
-		cout << "[12] Parar execução do programa" << endl << endl;
-		
-		
-		
-		
-		
-		cin >> opcao;
 		while(opcao != 12)
 		{
+			opcao = options();
 			switch(opcao)
 			{
 				case (1):
@@ -279,18 +271,67 @@ public:
 					this->library.register_loan(this->get_cpf(), this->create_book());
 					break;
 				case (4):
+					this->library.delet_client(this->get_cpf());
 					break;
+				case (5):
+					this->library.delet_book(this->create_book());
+					break;
+				case (6):
+					cout << "Digite o cpf do cliente" << endl;
+					this->library.delet_loan(this->get_cpf(), this->create_book());
+					break;
+				case (7):
+					this->library.print_client();
+					break;
+				case (8):
+					this->library.print_book();
+					break;
+				case (9):
+					this->library.print_loan();
+					break;
+				case (10):
+					this->replace_client();
 			}
-			
-
-
-			cin >> opcao;
 		}
+	}
+
+	void replace_client()
+	{
+		cout << "Digite o cpf do cliente que deseja modificar" << endl;
+		int cpf = this->get_cpf();
+
+		cout << "Digite as novas informaçõs do cliente:" << endl;
+		Client client = this->create_client();
+
+		this->library.replace_client(cpf, client);
+	}
+
+	int options()
+	{
+		cout << "[1] Cadastrar aluno" << endl;
+		cout << "[2] Cadastrar livro" << endl;
+		cout << "[3] Emprestar livro para aluno" << endl << endl;
+
+		cout << "[4] Deletar aluno " << endl;
+		cout << "[5] Deletar livro " << endl;
+		cout << "[6] Fazer devolução de livro" << endl << endl;
+		
+		cout << "[7] Visualizar alunos " << endl;
+		cout << "[8] Visualizar livros" << endl;
+		cout << "[9] Visualizar empréstimos" << endl << endl;
+
+		cout << "[10] Alterar aluno " << endl;
+		cout << "[11] Alterar livro" << endl;
+
+		cout << "[12] Parar execução do programa" << endl << endl;	
+		
+		int opcao;
+		cin >> opcao;
+		return opcao;
 	}
 
 	int get_cpf()
 	{
-		cout << "Digite o cpf do cliente" << endl;
 		int cpf;
 		cin >> cpf;
 		return cpf;
@@ -300,7 +341,7 @@ public:
 		string name;
 		cout << "Digite o nome do cliente" << endl;
 		cin >> name;
-
+		cout << "Digite o cpf do cliente" << endl;
 		int cpf = this->get_cpf();
 
 
