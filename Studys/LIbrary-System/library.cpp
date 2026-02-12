@@ -217,20 +217,27 @@ public:
 			if (cpf == this->clients[i].get_cpf())
 			{
 				this->clients[i] = client_new;
+				cout << "Cliente encontrado com sucesso" << endl; 
+				return;
 			}
 		}
+		cout << "Cliente não encontrado" << endl; 
 	}
 
 	void replace_book(Book book_previos, Book book_new)
 	{
+		
 		for (int i = 0; i < books.size(); i++)
 		{
 			if (book_previos.get_name() == this->books[i].get_name() &&
 			book_previos.get_author() == this->books[i].get_author())
 			{
 				this->books[i] = book_new;
+				cout << "Livro encontrado com sucesso" << endl; 
+				return;
 			}
 		}
+		cout << "Livro não encontrado" << endl; 
 	}
 
 	void replace_loan(Loan loan_previos, Loan loan_new)
@@ -291,6 +298,8 @@ public:
 					break;
 				case (10):
 					this->replace_client();
+				case (11):
+					this->replace_book();
 			}
 		}
 	}
@@ -305,6 +314,19 @@ public:
 
 		this->library.replace_client(cpf, client);
 	}
+
+	void replace_book()
+	{
+		cout << "Digite as informações solicitadas a seguir do livro que deseja modificar" << endl;
+		Book book_previos = this->create_book();
+
+		cout << "Digite as novas informaçõs do livro:" << endl;
+		Book book_new = this->create_book();
+
+		this->library.replace_book(book_previos, book_new);
+	}
+
+
 
 	int options()
 	{
