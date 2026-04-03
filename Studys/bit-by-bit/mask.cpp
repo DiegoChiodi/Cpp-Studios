@@ -32,8 +32,8 @@ int main(void)
             open = true;
             break;
         }
-
     }
+    
     if (open)
     {
         cout << "SIM";

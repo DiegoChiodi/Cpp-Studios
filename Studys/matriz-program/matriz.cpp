@@ -57,6 +57,25 @@ void addition_matrix()
     }
 }
 
+void mult_matrix()
+{
+    //O n de colunas da primeira tem que ser igual ao n de l da segunda
+    int lines_r =  matrix_main.size();
+    int columns_r;
+    cout << "Digite o número de colunas da matrix que vai multiplicar: " << endl;
+    std::cin >> columns_r;
+    vector<vector<int>> matrix_mult = fill_matrix(matrix_main[0].size(), columns_r);
+    vector<vector<int>> matrix_resul(lines_r, vector<int>(columns_r, 0));
+    
+    for (int i = 0; i < lines_r; i++)
+    {
+        for (int j = 0; j < columns_r; j++)
+        {
+
+        }
+    }
+}
+
 
 void manager()
 {
@@ -86,6 +105,9 @@ void manager()
                     print_matriz(matrix_main);
                 case 3:
                     addition_matrix();
+                case 4:
+                    mult_matrix();
+
             }
         }
     }
