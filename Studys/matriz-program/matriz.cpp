@@ -33,7 +33,7 @@ vector<vector<int>> create_matrix()
 
 
 
-void print_matriz(vector<vector<int>> _matrix)
+void print_matrix(const vector<vector<int>>& _matrix)
 {
     cout << "Matriz:" << endl;
     for (int i = 0; i < _matrix.size(); i++)
@@ -46,7 +46,7 @@ void print_matriz(vector<vector<int>> _matrix)
     }
 }
 
-void addition_matrix()
+void run_add_matrix()
 {
     vector<vector<int>> matrix = fill_matrix(matrix_main.size(), matrix_main[0].size());
     for (int i = 0; i < matrix_main.size(); i++)
@@ -59,9 +59,8 @@ void addition_matrix()
     cout << "Operação realizada com sucesso" << endl;
 }
 
-void mult_matrix()
+void run_mult_matrix() //O(n * n * n)
 {
-    //O n de colunas da primeira tem que ser igual ao n de l da segunda
     int lines_r =  matrix_main.size();
     int columns_r;
     cout << "Digite o número de colunas da matrix que vai multiplicar: " << endl;
@@ -83,6 +82,38 @@ void mult_matrix()
     cout << "Operação realizada com sucesso" << endl;
 }
 
+vector<vector<int>> get_transp(const vector<vector<int>>& matrix_target)
+{
+    vector<vector<int>> matrix_res(matrix_target[0].size(), vector<int>(matrix_target.size()));
+    for (int i = 0; i < matrix_target.size(); i++)
+    {
+        for (int j = 0; j < matrix_target[0].size(); j++)
+        {
+            matrix_res[j][i] = matrix_target[i][j];
+        }
+    }
+    return matrix_res;
+}
+
+void run_tranp_matrix()
+{
+    matrix_main = get_transp(matrix_main);
+    cout << "Operação realizada com sucesso!" << endl;
+}
+
+void run_matrix_simet()
+{
+    vector<vector<int>> matrix_transp = get_transp(matrix_main);
+
+    if (matrix_transp == matrix_main) {
+        cout << "A matrix é simétrica!" << endl;
+    } else if (matrix_main.size() != matrix_main[0].size()) {
+        cout << "A matrix não é simétrica! Detalhe: toda matrix simétrica é quadrada" << endl;
+    } else {
+        cout << "A matrix não é simétrica!" << endl;
+    }
+
+}
 
 void manager()
 {
@@ -102,7 +133,8 @@ void manager()
             cout << "4 - Multiplicação * de matrizes." << endl;
             cout << "5 - Transpor matriz atual." << endl;
             cout << "6 - Verificar se a matriz atual é simétrica." << endl;
-            cout << "7 - Sair X." << endl;
+
+            cout << "9 - Sair X." << endl;
 
             cin >> opcao;   
             switch(opcao)
@@ -111,13 +143,19 @@ void manager()
                     matrix_main = create_matrix();
                     break;
                 case 2:
-                    print_matriz(matrix_main);
+                    print_matrix(matrix_main);
                     break;
                 case 3:
-                    addition_matrix();
+                    run_add_matrix();
                     break;
                 case 4:
-                    mult_matrix();
+                    run_mult_matrix();
+                    break;
+                case 5:
+                    run_tranp_matrix();
+                    break;
+                case 6:
+                    run_matrix_simet();
                     break;
             }
         }
