@@ -59,26 +59,34 @@ void run_add_matrix()
     cout << "Operação realizada com sucesso" << endl;
 }
 
-void run_mult_matrix() //O(n * n * n)
-{
-    int lines_r =  matrix_main.size();
-    int columns_r;
-    cout << "Digite o número de colunas da matrix que vai multiplicar: " << endl;
-    std::cin >> columns_r;
-    vector<vector<int>> matrix_mult = fill_matrix(matrix_main[0].size(), columns_r);
+vector<vector<int>> mult_matrix(const vector<vector<int>>& matrix_1, const vector<vector<int>>& matrix_2) {
+
+    const int lines_r = matrix_1.size();
+    const int columns_r = matrix_2[0].size();
     vector<vector<int>> matrix_res(lines_r, vector<int>(columns_r, 0));
-    
     for (int i = 0; i < lines_r; i++)
     {
         for (int j = 0; j < columns_r; j++)
         {
             for (int k = 0; k < lines_r; k++)
             {
-                matrix_res[i][j] += matrix_main[i][k] * matrix_mult[k][j];
+                matrix_res[i][j] += matrix_1[i][k] * matrix_2[k][j];
             }
         }
     }
-    matrix_main = matrix_res;
+
+    return matrix_res;
+}
+
+void run_mult_matrix() //O(n * n * n)
+{
+    const int lines_r =  matrix_main.size();
+    int columns_r;
+    cout << "Digite o número de colunas da matrix que vai multiplicar: " << endl;
+    std::cin >> columns_r;
+    vector<vector<int>> matrix_mult = fill_matrix(matrix_main[0].size(), columns_r);
+    
+    matrix_main = mult_matrix(matrix_main, matrix_mult);
     cout << "Operação realizada com sucesso" << endl;
 }
 
@@ -133,7 +141,8 @@ void manager()
             cout << "4 - Multiplicação * de matrizes." << endl;
             cout << "5 - Transpor matriz atual." << endl;
             cout << "6 - Verificar se a matriz atual é simétrica." << endl;
-
+            cout << "7 - Rotacionar matrix." << endl;
+            cout << "8 - Inverter matrix." << endl;
             cout << "9 - Sair X." << endl;
 
             cin >> opcao;   
