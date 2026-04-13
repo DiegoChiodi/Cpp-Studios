@@ -154,8 +154,21 @@ void run_rotated_matrix() // debug 1 2 1 0 7 90 2
     matrix_main = mult_matrix(matrix_main, matrix_rotation);
 }
 
+double calculate_determinante(const vector<vector<double>>& _matrix)
+{
+    return 0;
+}
 void run_invert_matrix()
 {
+    if (matrix_main.size() != matrix_main[0].size()){
+
+        cout << "Uma matrix precisa ser quadrada para ter uma inversa!";
+        return;
+    }
+    if (calculate_determinante(matrix_main) == 0) {
+        
+        cout << "O determinante da matrix não pode ser igual a 0!";
+    }
 
 }
 
