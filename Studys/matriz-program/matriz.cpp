@@ -6,6 +6,18 @@ using namespace std;
 
 vector<vector<double>> matrix_main;
 
+class TermoAlgebrico {
+private:
+    double coeficiente = 0;
+    double parte_lit = 0;
+public:
+    TermoAlgebrico(double _coeficiente, double& _parte_lit)
+    {
+        this->coeficiente = _coeficiente;
+        this->parte_lit = _parte_lit;
+    }
+};
+
 vector<vector<double>> fill_matrix(int lines, int columns)
 {
     vector<vector<double>> matrix(lines, vector<double>(columns));
@@ -108,10 +120,10 @@ vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
     );
 
     for (int i = 0; i < matrix_target.size(); i++) {
-        for (int j = 0; j < matrix_target[0].size(); j++) {
+         for (int j = 0; j < matrix_target[0].size(); j++) {
             matrix_res[j][i] = matrix_target[i][j];
         }
-    }
+    }    
 
     return matrix_res;
 }
@@ -158,6 +170,29 @@ double calculate_determinante(const vector<vector<double>>& _matrix)
 {
     return 0;
 }
+
+vector<vector<vector<TermoAlgebrico>>> mult_matrix(const vector<vector<double>>& a,
+                                   const vector<vector<double>>& b)
+{
+    const int lines_r = a.size();
+    const int columns_r = b[0].size();
+
+    vector<vector<double>> matrix_res(
+        lines_r, vector<double>(columns_r, 0)
+    );
+
+    for (int i = 0; i < lines_r; i++) {
+        for (int j = 0; j < columns_r; j++) {
+            for (int k = 0; k < a[0].size(); k++) {
+                TermoAlgebrico termo_alg(a[i][k], b[k][j]);
+                matrix_res[i][j].append(termo_alg);
+            }
+        }
+    }
+
+    return matrix_res;
+}
+
 void run_invert_matrix()
 {
     if (matrix_main.size() != matrix_main[0].size()){
@@ -169,8 +204,7 @@ void run_invert_matrix()
         
         cout << "O determinante da matrix não pode ser igual a 0!";
     }
-
-}
+}   
 
 void manager()
 {
