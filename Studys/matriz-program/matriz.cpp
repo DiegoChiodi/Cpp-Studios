@@ -6,18 +6,6 @@ using namespace std;
 
 vector<vector<double>> matrix_main;
 
-class TermoAlgebrico {
-private:
-    const double coeficiente = 0;
-    const double *parte_lit = 0;
-public:
-    TermoAlgebrico(const double _coeficiente, const double *_parte_lit)
-    {
-        this->coeficiente = _coeficiente;
-        this->parte_lit = _parte_lit;
-    }
-};
-
 vector<vector<double>> fill_matrix(int lines, int columns)
 {
     vector<vector<double>> matrix(lines, vector<double>(columns));
@@ -112,6 +100,11 @@ void run_mult_matrix() // O(n * n * n)
     cout << "Operação realizada com sucesso" << endl;
 }
 
+double calculate_determinante(const vector<vector<double>>& _matrix)
+{
+    return 0;
+}
+
 vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
 {
     vector<vector<double>> matrix_res(
@@ -166,38 +159,6 @@ void run_rotated_matrix() // debug 1 2 1 0 7 90 2
     matrix_main = mult_matrix(matrix_main, matrix_rotation);
 }
 
-double calculate_determinante(const vector<vector<double>>& _matrix)
-{
-    return 0;
-}
-
-vector<vector<vector<TermoAlgebrico>>> mult_matrix_algeb(const vector<vector<double>>& a,
-                                   const vector<vector<double>>& b)
-{
-    const int lines_r = a.size();
-    const int columns_r = b[0].size();
-
-    vector<vector<vector<TermoAlgebrico>>> matrix_res(
-        lines_r,
-        vector<vector<TermoAlgebrico>>(
-            columns_r,
-            vector<TermoAlgebrico>()
-        )
-    );
-
-    for (int i = 0; i < lines_r; i++) {
-        for (int j = 0; j < columns_r; j++) {
-            for (int k = 0; k < a[0].size(); k++) {
-                TermoAlgebrico termo_alg(a[i][k], &b[k][j]);
-                matrix_res[i][j].push_back(termo_alg);
-            }
-        }
-    }
-
-
-
-    return matrix_res;
-}
 
 void run_invert_matrix()
 {
@@ -222,7 +183,7 @@ void manager()
     int opcao = -1;
     bool start = false;
 
-    while (opcao != 9) {
+    while (opcao != 12) {
         if (!start) {
             matrix_main = create_matrix();
             start = true;
@@ -236,7 +197,9 @@ void manager()
             cout << "6 - Verificar se a matriz atual é simétrica." << endl;
             cout << "7 - Rotacionar matrix." << endl;
             cout << "8 - Inverter matrix." << endl;
-            cout << "9 - Sair X." << endl;
+            cout << "9 - Escalonar matriz" << endl;
+
+            cout << "12 - Sair X." << endl;
 
             cin >> opcao;
 
