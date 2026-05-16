@@ -100,6 +100,31 @@ void run_mult_matrix() // O(n * n * n)
     cout << "Operação realizada com sucesso" << endl;
 }
 
+vector<vector<double>> escalonet_matrix(const vector<vector<double>>& _matrix)
+{
+    
+}
+
+vector<vector<double>> chio(const vector<vector<double>>& _matrix)
+{
+    //Requisitos
+    string permit = "Chio só pode ser aplicado";
+    if (_matrix[0][0] != 1)
+    {
+       cout << permit + " se a 1 1 sendo diferente de 1";
+       return _matrix;
+    }
+    if (_matrix.size() != _matrix[0].size())
+    {
+        cout << permit + " em matrizes quadradas. número de linhas = número de colunas.";
+        return _matrix;
+    }
+    if (_matrix[0].size() <= 2)
+    {
+        cout << permit + " em matrizes de ordem maior ou igual a 2";
+    }
+}
+
 double calculate_determinante(const vector<vector<double>>& _matrix)
 {
     return 0;
@@ -197,7 +222,7 @@ void manager()
             cout << "6 - Verificar se a matriz atual é simétrica." << endl;
             cout << "7 - Rotacionar matrix." << endl;
             cout << "8 - Inverter matrix." << endl;
-            cout << "9 - Escalonar matriz" << endl;
+            cout << "9 - Aplicar Chio" << endl;
 
             cout << "12 - Sair X." << endl;
 
