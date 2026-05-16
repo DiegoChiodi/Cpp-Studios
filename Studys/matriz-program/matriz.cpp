@@ -6,7 +6,7 @@ using namespace std;
 
 vector<vector<double>> matrix_main;
 
-bool is_square(const vector<vector<double>>& _matrix)
+bool is_square(const vector<vector<double>> &_matrix)
 {
     return (_matrix.size() == _matrix[0].size());
 }
@@ -31,7 +31,7 @@ vector<vector<double>> create_matrix()
 {
     cout << "Digite o número de linhas e depois o de colunas da matriz: ";
 
-    int lines, columns;
+    int lines, columns; 
     cin >> lines >> columns;
 
     vector<vector<double>> matrix_result = fill_matrix(lines, columns);
@@ -75,7 +75,7 @@ vector<vector<double>> mult_matrix(const vector<vector<double>>& a,
     {
         cout << "Multiplicação de matrizes impossivel, pois as colunas de A são diferentes das linhas de B";
     }
-    
+
     const int lines_r = a.size();
     const int columns_r = b[0].size();
 
@@ -112,7 +112,7 @@ void run_mult_matrix() // O(n * n * n)
 
 vector<vector<double>> escalonet_matrix(const vector<vector<double>>& _matrix)
 {
-    
+    return _matrix;
 }
 
 vector<vector<double>> chio(const vector<vector<double>>& _matrix)
@@ -132,12 +132,25 @@ vector<vector<double>> chio(const vector<vector<double>>& _matrix)
     if (_matrix[0].size() <= 2)
     {
         cout << permit + " em matrizes de ordem maior ou igual a 2";
+        return _matrix;
     }
+    return _matrix;
 }
 
-double calculate_determinante(const vector<vector<double>>& _matrix)
+double calculate_determinante_global(const vector<vector<double>> &_matrix)
 {
-    return 0;
+    return 0;   
+}
+
+double calculate_determinante_3x3(const vector<vector<double>> &_m)
+{
+    double result = (_m[0][0] * _m[1][1] * _m[2][2]
+        + _m[0][1] * _m[1][2] * _m[2][0]
+        + _m[0][2] * _m[1][0] * _m[2][1])
+        - (_m[2][0] * _m[1][1] * _m[0][2]
+        + _m[2][1] * _m[1][2] * _m[0][0]
+        + _m[2][2] * _m[1][0] * _m[0][1]);
+    return result;
 }
 
 vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
@@ -207,7 +220,7 @@ void run_invert_matrix()
         cout << "Uma matrix precisa ser quadrada para ter uma inversa!";
         return;
     }
-    if (calculate_determinante(matrix_main) == 0) {
+    if (calculate_determinante_global(matrix_main) == 0) {
         
         cout << "O determinante da matrix não pode ser igual a 0!";
     }
@@ -237,9 +250,11 @@ void manager()
             cout << "6 - Verificar se a matriz atual é simétrica." << endl;
             cout << "7 - Rotacionar matrix." << endl;
             cout << "8 - Inverter matrix." << endl;
-            cout << "9 - Aplicar Chio" << endl;
+            cout << "9 - Calcular determinante" << endl;
+            cout << "10 - Aplicar Chio" << endl;
 
             cout << "12 - Sair X." << endl;
+            cout << "Escolha: ";
 
             cin >> opcao;
 
@@ -267,6 +282,8 @@ void manager()
                     break;
                 case 8:
                     run_invert_matrix();
+                case 9:
+                    cout << calculate_determinante_3x3(matrix_main) << endl;
             }
         }
     }
