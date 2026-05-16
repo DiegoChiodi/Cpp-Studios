@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <stdexcept> // Necessário para exceções padrão
 
 using namespace std;
 
@@ -153,6 +154,12 @@ double calculate_determinante_3x3(const vector<vector<double>> &_m)
     return result;
 }
 
+double calculate_determinante_2x2(const vector<vector<double>> &_m)
+{
+    double result = (_m[0][0] * _m[1][1]) - (_m[1][0] * _m[0][1]);
+    return result;
+}
+
 vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
 {
     vector<vector<double>> matrix_res(
@@ -200,7 +207,7 @@ void run_rotated_matrix() // debug 1 2 1 0 7 90 2
     double graus = 0.0;
     cin >> graus;
 
-    double rad = -graus * 3.141592653589793 / 180.0;
+    double rad = -graus * M_PI / 180.0;
 
     vector<vector<double>> matrix_rotation = {
         {cos(rad), -sin(rad)},
@@ -231,61 +238,85 @@ void run_invert_matrix()
     );
 }
 
+void option() {
+    cout << "0 - Tabela de opções" << endl;
+    cout << "1 - Substituir matriz atual." << endl;
+    cout << "2 - Visualizar matriz atual." << endl;
+    cout << "3 - Adição + de matrizes" << endl;
+    cout << "4 - Multiplicação * de matrizes." << endl;
+    cout << "5 - Transpor matriz atual." << endl;
+    cout << "6 - Verificar se a matriz atual é simétrica." << endl;
+    cout << "7 - Rotacionar matrix." << endl;
+    cout << "8 - Inverter matrix." << endl;    cout << "0 - Tabela de opções" << endl;
+
+    cout << "9 - Calcular determinante" << endl;
+    cout << "10 - Aplicar Chio" << endl;
+    
+    cout << "30 - Sair X." << endl;
+}
+
 void manager()
 {
-    int opcao = -1;
+    int opcao = 0;
     bool start = false;
+    try {
+        while (opcao != 12) {
+            if (!start) {
+                matrix_main = create_matrix();
+                start = true;
+                option();
+            } else {
+                cout << "-----------------------------" << endl;
+                cout << "0 - Tabela de opções" << endl;
+                cout << "Escolha: ";
+                cin >> opcao;
+                cout << "=============================" << endl;
 
-    while (opcao != 12) {
-        if (!start) {
-            matrix_main = create_matrix();
-            start = true;
-        } else {
-            cout << "Escolha uma opção:" << endl;
-            cout << "1 - Substituir matriz atual." << endl;
-            cout << "2 - Visualizar matriz atual." << endl;
-            cout << "3 - Adição + de matrizes" << endl;
-            cout << "4 - Multiplicação * de matrizes." << endl;
-            cout << "5 - Transpor matriz atual." << endl;
-            cout << "6 - Verificar se a matriz atual é simétrica." << endl;
-            cout << "7 - Rotacionar matrix." << endl;
-            cout << "8 - Inverter matrix." << endl;
-            cout << "9 - Calcular determinante" << endl;
-            cout << "10 - Aplicar Chio" << endl;
-
-            cout << "12 - Sair X." << endl;
-            cout << "Escolha: ";
-
-            cin >> opcao;
-
-            switch (opcao) {
-                case 1:
-                    matrix_main = create_matrix();
-                    break;
-                case 2:
-                    print_matrix(matrix_main);
-                    break;
-                case 3:
-                    run_add_matrix();
-                    break;
-                case 4:
-                    run_mult_matrix();
-                    break;
-                case 5:
-                    run_tranp_matrix();
-                    break;
-                case 6:
-                    run_matrix_is_simet();
-                    break;
-                case 7:
-                    run_rotated_matrix();
-                    break;
-                case 8:
-                    run_invert_matrix();
-                case 9:
-                    cout << calculate_determinante_3x3(matrix_main) << endl;
+                switch (opcao) {
+                    case 0:
+                        option();
+                        break;
+                    case 1:
+                        matrix_main = create_matrix();
+                        break;
+                    case 2:
+                        print_matrix(matrix_main);
+                        break;
+                    case 3:
+                        run_add_matrix();
+                        break;
+                    case 4:
+                        run_mult_matrix();
+                        break;
+                    case 5:
+                        run_tranp_matrix();
+                        break;
+                    case 6:
+                        run_matrix_is_simet();
+                        break;
+                    case 7:
+                        run_rotated_matrix();
+                        break;
+                    case 8:
+                        run_invert_matrix();
+                    case 9:
+                        if (matrix_main.size() == 2)
+                        {
+                            cout << calculate_determinante_2x2(matrix_main) << endl;
+                        } else 
+                        {
+                            cout << calculate_determinante_3x3(matrix_main) << endl;
+                        }
+                    case 10:
+                        break;
+                }
             }
         }
+    }
+    catch (const std::exception& e) {
+        // Tratamento da exceção
+        cerr << "Erro: " << e.what() << std::endl;
+        manager();
     }
 }
 
