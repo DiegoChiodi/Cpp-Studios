@@ -6,6 +6,11 @@ using namespace std;
 
 vector<vector<double>> matrix_main;
 
+bool is_square(const vector<vector<double>>& _matrix)
+{
+    return (_matrix.size() == _matrix[0].size());
+}
+
 vector<vector<double>> fill_matrix(int lines, int columns)
 {
     vector<vector<double>> matrix(lines, vector<double>(columns));
@@ -66,6 +71,11 @@ void run_add_matrix()
 vector<vector<double>> mult_matrix(const vector<vector<double>>& a,
                                    const vector<vector<double>>& b)
 {
+    if (a[0].size() != b.size())
+    {
+        cout << "Multiplicação de matrizes impossivel, pois as colunas de A são diferentes das linhas de B";
+    }
+    
     const int lines_r = a.size();
     const int columns_r = b[0].size();
 
@@ -114,7 +124,7 @@ vector<vector<double>> chio(const vector<vector<double>>& _matrix)
        cout << permit + " se a 1 1 sendo diferente de 1";
        return _matrix;
     }
-    if (_matrix.size() != _matrix[0].size())
+    if (is_square(_matrix))
     {
         cout << permit + " em matrizes quadradas. número de linhas = número de colunas.";
         return _matrix;
@@ -167,6 +177,11 @@ void run_matrix_is_simet()
 
 void run_rotated_matrix() // debug 1 2 1 0 7 90 2
 {
+    if (matrix_main.size() != 2 ||  matrix_main[0].size() != 2)
+    {
+        cout << "O programa só aceita matrizes de ordem 2x2 para rotacionar, aguarde futuras implementações";
+        return;
+    }
     cout << "Digite o ângulo que deseja rotacionar a matriz: ";
 
     double graus = 0.0;
