@@ -178,9 +178,11 @@ double get_det_glo(vector<vector<double>> _m)
     if (_m.size() == 2)
     {
         det = get_det_2x2(_m);
-    } else 
+    } else if (_m.size() == 3)
     {
         det = get_det_3x3(_m);
+    } else {
+        cout << "O programa ainda não pode calcular determinantes de matrizes de ordem superior a 3x3, use Chio ou aguarde novas atualizações!";
     }
     return det;
 }
@@ -253,7 +255,6 @@ void run_invert_m()
         return;
     }
     if (get_det_glo(matrix_main) == 0) {
-        
         cout << "O determinante da matrix não pode ser igual a 0!";
     }
 
@@ -265,81 +266,92 @@ void run_invert_m()
 
 void option() {
     cout << "0 - Tabela de opções" << endl;
-    cout << "1 - Substituir matriz atual." << endl;
-    cout << "2 - Visualizar matriz atual." << endl;
-    cout << "3 - Adição + de matrizes" << endl;
-    cout << "4 - Multiplicação * de matrizes." << endl;
-    cout << "5 - Transpor matriz atual." << endl;
-    cout << "6 - Verificar se a matriz atual é simétrica." << endl;
+    cout << "1 - Trocar matriz." << endl;
+    cout << "2 - Visualizar matriz." << endl;
+    cout << "3 - + Adição de matrizes" << endl;
+    cout << "4 - * Multiplicação de matrizes." << endl;
+    cout << "5 - Transpor matriz." << endl;
+    cout << "6 - Verificar se a matriz é simétrica." << endl;
     cout << "7 - Rotacionar matrix." << endl;
-    cout << "8 - Inverter matrix." << endl;    cout << "0 - Tabela de opções" << endl;
+    cout << "8 - Inverter matrix." << endl;
     cout << "9 - Calcular determinante" << endl;
     cout << "10 - Aplicar Chio" << endl;
     
     cout << "30 - Sair X." << endl;
 }
 
-void manager()
+void run()
 {
+    cin.exceptions(ios::failbit);
     int opcao = 0;
     bool start = false;
-    try {
-        while (opcao != 12) {
+    
+    while(opcao != 30)
+    {
+        try {
             if (!start) {
                 matrix_main = create_matrix();
                 start = true;
                 option();
-            } else {
-                cout << "-----------------------------" << endl;
-                cout << "0 - Tabela de opções" << endl;
-                cout << "Escolha: ";
-                cin >> opcao;
-                cout << "=============================" << endl;
+            }
+            cout << "-----------------------------" << endl;
+            cout << "0 - Tabela de opções" << endl;
+            cout << "Escolha: ";
+            cin >> opcao;
+            cout << "=============================" << endl;
 
-                switch (opcao) {
-                    case 0:
-                        option();
-                        break;
-                    case 1:
-                        matrix_main = create_matrix();
-                        break;
-                    case 2:
-                        print_m(matrix_main);
-                        break;
-                    case 3:
-                        run_add_m();
-                        break;
-                    case 4:
-                        run_mult_m();
-                        break;
-                    case 5:
-                        run_tranp_m();
-                        break;
-                    case 6:
-                        run_m_is_simet();
-                        break;
-                    case 7:
-                        run_rotated_m();
-                        break;
-                    case 8:
-                        run_invert_m();
-                    case 9:
-                        cout << (get_det_glo(matrix_main));
-                        break;
-                    case 10:
-                        matrix_main = chio(matrix_main);
-                        break;
-                }
+            switch (opcao) {
+                case 0:
+                    option();
+                    break;
+                case 1:
+                    matrix_main = create_matrix();
+                    print_m(matrix_main);
+                    break;
+                case 2:
+                    print_m(matrix_main);
+                    break;
+                case 3:
+                    run_add_m();
+                    print_m(matrix_main);
+                    break;
+                case 4:
+                    run_mult_m();
+                    print_m(matrix_main);
+                    break;
+                case 5:
+                    run_tranp_m();
+                    print_m(matrix_main);
+                    break;
+                case 6:
+                    run_m_is_simet();
+                    break;
+                case 7:
+                    run_rotated_m();
+                    print_m(matrix_main);
+                    break;
+                case 8:
+                    run_invert_m();
+                    print_m(matrix_main);
+                case 9:
+                    cout << (get_det_glo(matrix_main));
+                    break;
+                case 10:
+                    matrix_main = chio(matrix_main);
+                    break;
             }
         }
-    }
-    catch (const std::exception& e) {
-        cerr << "Erro: " << e.what() << std::endl;
+        catch (const std::exception& e) {
+            cerr << "Erro: " << e.what() << std::endl;
+
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
     }
 }
 
 int main()
 {
-    manager();
+    run();
     return 0;
 }
