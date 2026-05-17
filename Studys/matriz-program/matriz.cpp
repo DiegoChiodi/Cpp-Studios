@@ -7,9 +7,9 @@ using namespace std;
 
 vector<vector<double>> matrix_main;
 
-bool is_square(const vector<vector<double>> &_matrix)
+bool is_square(const vector<vector<double>> &_m)
 {
-    return (_matrix.size() == _matrix[0].size());
+    return (_m.size() == _m[0].size());
 }
 
 vector<vector<double>> fill_matrix(int lines, int columns)
@@ -39,7 +39,7 @@ vector<vector<double>> create_matrix()
     return matrix_result;
 }
 
-void print_matrix(const vector<vector<double>>& _matrix)
+void print_m(const vector<vector<double>>& _matrix)
 {
     cout << "Matriz:" << endl;
 
@@ -55,7 +55,7 @@ void print_matrix(const vector<vector<double>>& _matrix)
     }
 }
 
-void run_add_matrix()
+void run_add_m()
 {
     vector<vector<double>> matrix =
         fill_matrix(matrix_main.size(), matrix_main[0].size());
@@ -95,7 +95,7 @@ vector<vector<double>> mult_matrix(const vector<vector<double>>& a,
     return matrix_res;
 }
 
-void run_mult_matrix() // O(n * n * n)
+void run_mult_m() // O(n * n * n)
 {
     const int lines_r = matrix_main.size();
 
@@ -116,34 +116,39 @@ vector<vector<double>> escalonet_matrix(const vector<vector<double>>& _matrix)
     return _matrix;
 }
 
-vector<vector<double>> chio(const vector<vector<double>>& _matrix)
+vector<vector<double>> chio(vector<vector<double>> _m)
 {
     //Requisitos
     string permit = "Chio só pode ser aplicado";
-    if (_matrix[0][0] != 1)
+    if (_m[0][0] != 1)
     {
        cout << permit + " se a 1 1 sendo diferente de 1";
-       return _matrix;
+       return _m;
     }
-    if (is_square(_matrix))
+    if (!is_square(_m))
     {
         cout << permit + " em matrizes quadradas. número de linhas = número de colunas.";
-        return _matrix;
+        return _m;
     }
-    if (_matrix[0].size() <= 2)
+    if (_m[0].size() <= 2)
     {
         cout << permit + " em matrizes de ordem maior ou igual a 2";
-        return _matrix;
+        return _m;
     }
-    return _matrix;
+
+    vector<vector<double>> m_res(_m.size() - 1,vector<double>(_m.size() - 1));
+
+    for (int i = 0; i < _m.size() - 1; i ++)
+    {
+        for (int j = 0; j < _m[0].size() -1; j++)
+        {
+            m_res[i][j] = _m[i + 1][j + 1] - (_m[i + 1][0] * _m[0][j + 1]);
+        }
+    }
+    return m_res;
 }
 
-double calculate_determinante_global(const vector<vector<double>> &_matrix)
-{
-    return 0;   
-}
-
-double calculate_determinante_3x3(const vector<vector<double>> &_m)
+double get_det_3x3(const vector<vector<double>> &_m)
 {
     double result = (_m[0][0] * _m[1][1] * _m[2][2]
         + _m[0][1] * _m[1][2] * _m[2][0]
@@ -154,10 +159,30 @@ double calculate_determinante_3x3(const vector<vector<double>> &_m)
     return result;
 }
 
-double calculate_determinante_2x2(const vector<vector<double>> &_m)
+double get_det_2x2(const vector<vector<double>> &_m)
 {
     double result = (_m[0][0] * _m[1][1]) - (_m[1][0] * _m[0][1]);
     return result;
+}
+
+double get_det_glo(vector<vector<double>> _m)
+{
+    double det = 0;
+
+    for (int i = _m.size(); i > 3; i--)
+    {
+        _m = chio(_m);
+    }
+
+
+    if (_m.size() == 2)
+    {
+        det = get_det_2x2(_m);
+    } else 
+    {
+        det = get_det_3x3(_m);
+    }
+    return det;
 }
 
 vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
@@ -176,13 +201,13 @@ vector<vector<double>> get_transp(const vector<vector<double>>& matrix_target)
     return matrix_res;
 }
 
-void run_tranp_matrix()
+void run_tranp_m()
 {
     matrix_main = get_transp(matrix_main);
     cout << "Operação realizada com sucesso!" << endl;
 }
 
-void run_matrix_is_simet()
+void run_m_is_simet()
 {
     vector<vector<double>> matrix_transp = get_transp(matrix_main);
 
@@ -195,7 +220,7 @@ void run_matrix_is_simet()
     }
 }
 
-void run_rotated_matrix() // debug 1 2 1 0 7 90 2
+void run_rotated_m() // debug 1 2 1 0 7 90 2
 {
     if (matrix_main.size() != 2 ||  matrix_main[0].size() != 2)
     {
@@ -214,20 +239,20 @@ void run_rotated_matrix() // debug 1 2 1 0 7 90 2
         {sin(rad),  cos(rad)}
     };
 
-    print_matrix(mult_matrix(matrix_main, matrix_rotation));
+    print_m(mult_matrix(matrix_main, matrix_rotation));
 
     matrix_main = mult_matrix(matrix_main, matrix_rotation);
 }
 
 
-void run_invert_matrix()
+void run_invert_m()
 {
     if (matrix_main.size() != matrix_main[0].size()){
 
         cout << "Uma matrix precisa ser quadrada para ter uma inversa!";
         return;
     }
-    if (calculate_determinante_global(matrix_main) == 0) {
+    if (get_det_glo(matrix_main) == 0) {
         
         cout << "O determinante da matrix não pode ser igual a 0!";
     }
@@ -248,7 +273,6 @@ void option() {
     cout << "6 - Verificar se a matriz atual é simétrica." << endl;
     cout << "7 - Rotacionar matrix." << endl;
     cout << "8 - Inverter matrix." << endl;    cout << "0 - Tabela de opções" << endl;
-
     cout << "9 - Calcular determinante" << endl;
     cout << "10 - Aplicar Chio" << endl;
     
@@ -280,43 +304,37 @@ void manager()
                         matrix_main = create_matrix();
                         break;
                     case 2:
-                        print_matrix(matrix_main);
+                        print_m(matrix_main);
                         break;
                     case 3:
-                        run_add_matrix();
+                        run_add_m();
                         break;
                     case 4:
-                        run_mult_matrix();
+                        run_mult_m();
                         break;
                     case 5:
-                        run_tranp_matrix();
+                        run_tranp_m();
                         break;
                     case 6:
-                        run_matrix_is_simet();
+                        run_m_is_simet();
                         break;
                     case 7:
-                        run_rotated_matrix();
+                        run_rotated_m();
                         break;
                     case 8:
-                        run_invert_matrix();
+                        run_invert_m();
                     case 9:
-                        if (matrix_main.size() == 2)
-                        {
-                            cout << calculate_determinante_2x2(matrix_main) << endl;
-                        } else 
-                        {
-                            cout << calculate_determinante_3x3(matrix_main) << endl;
-                        }
+                        cout << (get_det_glo(matrix_main));
+                        break;
                     case 10:
+                        matrix_main = chio(matrix_main);
                         break;
                 }
             }
         }
     }
     catch (const std::exception& e) {
-        // Tratamento da exceção
         cerr << "Erro: " << e.what() << std::endl;
-        manager();
     }
 }
 
