@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ void quickSort(vector<int>& v, int low, int high) {
 
 int main(void)
 {
-	int v = {4, 1, 5, 8, 2, 3, 7, 6};
+	vector<int> v = {4, 1, 5, 8, 2, 3, 7, 6};
 	quickSort(v,0,8);
 	return 0;
 }
