@@ -5,7 +5,7 @@ using namespace std;
 int main(void)
 {
     int botoes_num, pasword_target;
-    cin >> botoes_num >> pasword_target;
+    cin >> pasword_target >> botoes_num;
 
     int botoes[botoes_num];
 
@@ -36,8 +36,8 @@ int main(void)
     
     if (open)
     {
-        cout << "SIM";
+        cout << "S";
     } else {
-        cout << "NAO";
+        cout << "N";
     }
 }
