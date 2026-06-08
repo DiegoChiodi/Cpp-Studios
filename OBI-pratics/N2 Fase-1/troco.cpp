@@ -27,6 +27,6 @@ int main(void)
         }
     }
 
-    cout << (dp[valor_f] ? "S" : "N");
+    cout << (dp[valor_f] ? "S" : "N");zas
     return 0;
 }
